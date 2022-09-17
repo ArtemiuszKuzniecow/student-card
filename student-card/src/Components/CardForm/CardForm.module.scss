@@ -1,2 +1,27 @@
 @import "../../styles/mixins.scss";
 @import "../../styles/vars.scss";
+
+.form_container {
+    @include _container;
+
+    &_h {
+        align-self: center;
+    }
+
+    &_form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 5px;
+        &_field {
+            background-color: $background-light;
+            border: 2px solid $background-light;
+            color: $main-color;
+            border-radius: 15px;
+            height: 25px;
+        }
+        &_button {
+            @include _button
+        }
+    }
+}
