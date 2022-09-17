@@ -1,0 +1,10 @@
+@import "../../styles/mixins.scss";
+@import "../../styles/vars.scss";
+
+.container_card {
+    @include _container;
+
+    &_button {
+        @include _button;
+    }
+}
