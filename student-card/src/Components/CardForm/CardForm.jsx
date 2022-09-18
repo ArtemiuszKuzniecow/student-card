@@ -38,7 +38,7 @@ const CardForm = () => {
           {...register("name", {
             required: { value: true, message: "Введите, пожалуйста, своё имя" },
             pattern: {
-              value: /[A-Za-z]{3}/,
+              value: /[A-Za-z]/,
               message: "Данные должны быть написаны латиницей",
             },
           })}
@@ -57,7 +57,7 @@ const CardForm = () => {
               message: "Введите, пожалуйста, свою фамилию",
             },
             pattern: {
-              value: /[A-Za-z]{3}/,
+              value: /[A-Za-z]/,
               message: "Данные должны быть написаны латиницей",
             },
           })}
@@ -77,6 +77,10 @@ const CardForm = () => {
               value: true,
               message: "Введите, пожалуйста, год своего рождения",
             },
+            min: {
+              value: 1900,
+              message: "Год Вашего рождения не может быть меньше 1900 года",
+            },
             max: {
               value: new Date().getFullYear() - 1,
               message: "Год Вашего рождения не может быть больше текущего года",
@@ -90,6 +94,7 @@ const CardForm = () => {
         <label>Портфолио</label>
         <input
           type="text"
+          placeholder="http://github.io"
           defaultValue={userData ? userData.portfolio : ""}
           {...register("portfolio", {
             required: {
