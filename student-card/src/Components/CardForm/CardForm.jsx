@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "./CardForm.module.scss";
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
