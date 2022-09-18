@@ -19,6 +19,9 @@
             color: $main-color;
             border-radius: 15px;
             height: 25px;
+            &_error {
+                color: $error-color;
+            }
         }
         &_button {
             @include _button

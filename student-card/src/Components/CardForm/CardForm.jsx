@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./CardForm.module.scss";
 import { useForm } from "react-hook-form";
+import { Link, useHistory } from "react-router-dom";
 
 const CardForm = () => {
   const {
@@ -11,7 +12,14 @@ const CardForm = () => {
     mode: "onChange",
   });
 
-  const onSubmit = (data) => console.log(data);
+  const history = useHistory();
+
+  const onSubmit = (data) => {
+    window.localStorage.setItem("user", JSON.stringify(data));
+    history.push("/");
+  };
+
+  const userData = JSON.parse(window.localStorage.getItem("user"));
 
   return (
     <div className={style.form_container}>
@@ -26,29 +34,44 @@ const CardForm = () => {
         <label>Имя</label>
         <input
           type="text"
+          defaultValue={userData ? userData.name : ""}
           {...register("name", {
             required: { value: true, message: "Введите, пожалуйста, своё имя" },
+            pattern: {
+              value: /[A-Za-z]{3}/,
+              message: "Данные должны быть написаны латиницей",
+            },
           })}
           className={style.form_container_form_field}
         />
-        <span>{errors.name && errors.name.message}</span>
+        <span className={style.form_container_form_field_error}>
+          {errors.name && errors.name.message}
+        </span>
         <label>Фамилия</label>
         <input
           type="text"
+          defaultValue={userData ? userData.surname : ""}
           {...register("surname", {
             required: {
               value: true,
               message: "Введите, пожалуйста, свою фамилию",
             },
+            pattern: {
+              value: /[A-Za-z]{3}/,
+              message: "Данные должны быть написаны латиницей",
+            },
           })}
           className={style.form_container_form_field}
         />
-        <span>{errors.surname && errors.surname.message}</span>
+        <span className={style.form_container_form_field_error}>
+          {errors.surname && errors.surname.message}
+        </span>
         <label>Год рождения</label>
         <input
           type="number"
           min="1900"
           max={new Date().getFullYear() - 1}
+          defaultValue={userData ? userData.year : ""}
           {...register("year", {
             required: {
               value: true,
@@ -61,29 +84,41 @@ const CardForm = () => {
           })}
           className={style.form_container_form_field}
         />
-        <span>{errors.year && errors.year.message}</span>
+        <span className={style.form_container_form_field_error}>
+          {errors.year && errors.year.message}
+        </span>
         <label>Портфолио</label>
         <input
           type="text"
+          defaultValue={userData ? userData.portfolio : ""}
           {...register("portfolio", {
             required: {
               value: true,
-              message: "Пожалуйста укажите ссылку на Ваше портфолио",
+              message: "Пожалуйста, укажите ссылку на Ваше портфолио",
             },
             validate: {
-              value: (value) => {
+              isLink: (value) => {
                 const portfolioRegExp =
                   /http\:\/\/\w+\.\w+|https\:\/\/\w+\.\w+/g;
                 return portfolioRegExp.test(value);
               },
-              message: "Пожалуйста укажите правильную ссылку на Ваше портфолио",
             },
           })}
           className={style.form_container_form_field}
         />
-        <span>{errors.portfolio && errors.portfolio.message}</span>
-        {/* {errors.exampleRequired && <span>This field is required</span>} */}
-        <input type="submit" className={style.form_container_form_button} />
+        <span className={style.form_container_form_field_error}>
+          {errors.portfolio && errors.portfolio.message}
+          {errors.portfolio?.type === "isLink" &&
+            "Пожалуйста, укажите правильную ссылку на Ваше портфолио"}
+        </span>
+        <div>
+          {userData && (
+            <Link to="/" className={style.form_container_form_button}>
+              Back
+            </Link>
+          )}{" "}
+          <input type="submit" className={style.form_container_form_button} />
+        </div>
       </form>
     </div>
   );
